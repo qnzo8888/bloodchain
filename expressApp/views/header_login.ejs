@@ -1,0 +1,126 @@
+
+
+<nav id="header" class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <a href="/"><img src="/images/blood-logo.jpg" width="72" height="72"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home </a>
+            </li>
+        </ul>
+
+        <%if(locals.donated_bdcard_count){%>
+        <div class="toast" id="donated_alerm" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+            <div class="toast-header">
+                <strong class="mr-auto">알림</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                기부가 완료된 기부요청글이 존재합니다! <a id="toastbtn"  href="/blood/my_blood_request" class="btn btn-success btn-sm">확인하기 &raquo;</a>
+            </div>
+        </div>
+        <%}%>
+        <%if(locals.dona_count){%>
+        <div class="toast" id="dona_alerm" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+            <div class="toast-header">
+                <strong class="mr-auto">알림</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                회원님께서 기부하신 <a id="req_id" style="color: red"></a>번요청글 <a id="distinct"></a> <a id="see_dona"  href="/blood/my_blood_request" class="btn btn-success btn-sm">확인하기 &raquo;</a>
+            </div>
+        </div>
+        <%}%>
+        <a href="#"><img src="/images/user.png" width="62" height="62"></a>
+
+        <ul class="navbar-nav p-1">
+            <li class="nav-item p-1">
+
+                닉네임 : <%=locals.nickname%><br>
+                등급 : <label id="class"><%=locals.class%></label>
+
+            </li>
+            <li class="nav-item p-1" style="color: rgb(224, 230, 235)">
+                <a class="nav-link" href="/users/logout">로그아웃<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item p-1">
+                <a class="nav-link" href="/users/mypage">마이페이지<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<br><br><br><br>
+
+<script>
+    $(document).ready(function () {
+        if(Number("<%=locals.donated_bdcard_count%>")){
+            $.ajax({
+                url: '/blood/donated_finished_check',
+                dataType: 'json',
+                type: 'POST',
+                data: {
+                    id: "<%=locals.user_id%>"
+                },
+                success: function (data) {
+                    if (!data.used) {
+                        $('#donated_alerm').toast('show');
+                    } 
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        if(Number("<%=locals.dona_count%>")){
+            $.ajax({
+                url: '/blood/dona_finished_check',
+                dataType: 'json',
+                type: 'POST',
+                data: {
+                    id: "<%=locals.user_id%>"
+                },
+                success: function (data) {
+                    if(data.finish){
+                        $('#dona_alerm').toast('show');
+                        $('#req_id').text(data.req_id);
+                        $('#see_dona').attr('href', '/blood/blood_history_req?req_id=' + data.req_id + '&alarm=fin');
+                        $('#distinct').text('기부완료')
+                    } 
+                    if(data.use){
+                        $('#dona_alerm').toast('show');
+                        $('#req_id').text(data.req_id);
+                        $('#see_dona').attr('href', '/blood/blood_history_req?req_id=' + data.req_id + '&alarm=use');
+                        $('#distinct').text('사용완료');
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    })
+
+
+    $(function(){
+        if("<%=locals.class%>" == 'bronze')
+            $("#class").css("color", "brown");
+        else if("<%=locals.class%>" == 'silver')
+            $("#class").css("color", "silver");
+        else if("<%=locals.class%>" == 'gold')
+            $("#class").css("color", "gold");
+        else if("<%=locals.class%>" == 'platinum')
+            $("#class").css("color", "rgb(123, 211, 221)");
+        else
+            $("#class").css("color", "white");
+    })
+</script>

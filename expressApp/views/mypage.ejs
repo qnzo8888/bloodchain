@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>마이페이지</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/jumbotron.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+        integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</script>
+    <script>window.jQuery || document.write('<script src="/bootstrap/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+</head>
+
+<%if(!locals.user_id){%>    
+    <script>
+        alert('로그아웃 상태입니다. 메인으로 돌아갑니다.');
+        location.href = '/';  
+    </script>
+<%}%>
+
+
+<body>  
+    
+
+    <%- include("header_login.ejs")%>
+
+    <main>
+        <div class="container">
+            <p><h2>마이페이지</h2></p>
+
+            <div class="bg-light m-3 p-3 row">
+                <ul class="navbar-nav text-center">
+                    <li><p>My Profile</p></li>
+                    <li><a href="#"><img src="/images/user.png" width="62" height="62"></a><br></li>
+                    <li><p><%=locals.nickname%></p></li>
+                </ul>
+
+                <%
+                    switch (locals.class) {
+                        case 'bronze':
+                            var margin = 5;
+                            var rest = margin - locals.dona_count;
+                            var per = (5 - rest) / 5 * 100;
+                            break;
+                        case 'silver':
+                            var margin = 10;
+                            var rest = margin - locals.dona_count;
+                            var per = (5 - rest) / 5 * 100;
+                            break;
+                        case 'gold':
+                            var margin = 15;
+                            var rest = margin - locals.dona_count;
+                            var per = (5 - rest) / 5 * 100;
+                            break;
+                        case 'platinum':
+                            var margin = 30;
+                            var rest = margin - locals.dona_count;
+                            var per = (15 - rest) / 15 * 100;
+                            break;
+                        case 'diamond':
+                            var per = 100;
+                            break;
+                    }
+                %>
+
+                <ul class="navbar-nav p-3">
+                    <li class="nav-item p-1">
+                        총 <a style="color: green"><%=locals.bdcard_count + locals.dona_count%></a>개의 헌혈증을 등록하셨고,
+                        그 중  <a style="color: red"><%=locals.dona_count%></a>개를 기부해 <a style="color: blue"><%=locals.bdcard_count%></a>개를 더 기부하실 수 있습니다. 
+                        <a href="/blood/blood_register">▶등록하러가기   </a>
+                        <a href="/blood/blood_donation_main">▶기부하러가기</a>
+                    </li>
+                    <li class="nav-item p-1">
+                        총 <a style="color: green"><%=locals.donated_bdcard_count%></a>개의 헌혈증을 기부받으셨습니다.
+                        <a href="/blood/blood_request">▶기부요청글 올리기</a>
+
+                    </li>
+                    <li class="nav-item p-1">
+                        등급: <%=locals.class%>
+                    </li>
+                    <li class="nav-item p-1">
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: <%=per%>%"></div>
+                        </div>
+                    </li>
+                    <li class="nav-item p-1">
+                        <%if(locals.class == 'diamond'){%>
+                            최고 등급이 되셨습니다!
+                        <%}else{%>
+                            앞으로 <%=rest%>개의 헌혈증을 기부하면 등급이 됩니다!
+                        <%}%>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="bg-light m-3 p-3">
+                <p>My Info</p>
+
+                <div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="text-center" scope="row">아이디</th>
+                                <td class="text-center"><%=locals.user_id%></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" scope="row">닉네임</th>
+                                <td class="text-center"><%=locals.nickname%></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center"><%if(locals.flag){%>재단<%}%>이름</th>
+                                <td class="text-center"><%=locals.user_name%></td>
+                            </tr>
+                            <%if(locals.flag){%>
+                            <tr>
+                                <th class="text-center">사업자등록번호</th>
+                                <td class="text-center"><%=locals.business_license_num%></td>
+                            </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <a class="btn btn-success" href="/blood/my_blood_request" role="button">내 기부요청 관리</a>
+                <a class="btn btn-success" href="/users/my_profile_edit" role="button">정보수정</a>
+                <!--button id="withdraw" type="button" class="btn btn-danger" data-dismiss="modal">회원탈퇴</button-->
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
+

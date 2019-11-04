@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>메인화면</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/jumbotron.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+        integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</script>
+    <script>window.jQuery || document.write('<script src="/bootstrap/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+
+<!-- 회원가입 성공 후 main으로 돌아올 경우 알려주고 url 바꿔줌  -->
+<%if(register == "success"){%>
+    <script>
+        alert('회원이 되신 것을 축하드립니다!');    
+        location.replace='/';
+    </script>
+<%}%>
+
+<!--로그인 성공 후 main으로 render할 경우 url 바꿔줌-->
+<%if(login == true){%>
+    <script>
+        location.href='/';
+    </script>
+<%}%>
+
+<!--회원정보 수정 성공 후 main으로 render할 경우 url 바꿔줌-->
+<%if(register == "success_edit"){%>
+    <script>
+        alert('비밀번호를 변경했습니다. 다시 로그인 해주세요.');
+        location.href='/';
+    </script>
+<%}%>
+
+<body>
+    <!-- 로그인 했을 때와 안했을 때 header 다름 -->
+    <%if(locals.user_id){%>
+    <%- include('header_login.ejs')%>
+    <%}else{%>
+    <%- include('header_logout.ejs')%>
+    <%}%>
+    <main role="main">
+        <div id="demo" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+          </ul>
+
+          <!-- The slideshow -->
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="/images/green.jpg" width="1280" height="450">
+            </div>
+            <div class="carousel-item">
+              <img src="/images/smile.jpg" width="1280" height="450">
+            </div>
+            <div class="carousel-item">
+              <img src="/images/heart.jpg" width="1280" height="450">
+            </div>
+          </div>
+
+          <!-- Left and right controls -->
+          <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </a>
+          <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </a>
+        </div><br><br>
+
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <!--div class="jumbotron">
+            <div class="container">
+                <h1 class="display-6">헌혈증 기부하자~</h1>
+                <%if(logged == false){%>
+                <p id="register_recommend">회원가입을 하시면 서비스를 이용하실 수 있습니다.</p>
+                <%}%>
+            </div>
+        </div-->
+      
+        <div class="container">
+            <!-- Example row of columns -->
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>등록</h2>
+                    <p>내가 갖고있는 헌혈증을 등록하여 안전하게 영구적으로 보관할 수 있습니다.</p>
+                    <p><a id="blood_reg"class="btn btn-success" href="/blood/blood_register" role="button">헌혈증 등록하러 가기 &raquo;</a></p>
+                </div>
+                <hr style="width: 0px; height: 50px; border-right: 0px">
+
+                <div class="col-md-4">
+                    <h2>기부</h2>
+                    <p>내가 등록한 헌혈증을 기부하거나 헌혈증이 필요하면 기부요청글을 올릴 수 있습니다.</p>
+                    <p><a class="btn btn-success" href="/blood/blood_donation_main" role="button">기부하러/받으러가기 &raquo;</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>기부내역</h2>
+                    <p>기부한 헌혈증을 기부요청글 별로 확인할 수 있습니다.</p>
+                    <p><a id="blood_history_donate" class="btn btn-success" href="/blood/blood_history_req" role="button">기부내역 보러가기 &raquo;</a></p>
+                </div>
+            </div>
+            <hr>
+            <%if(locals.bdcard_count){%>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p></p>총 <a style="color: green"><%=locals.bdcard_count + locals.dona_count%></a>개의 헌혈증을 등록하셨습니다.</p>
+                    </div>
+                </div>
+            <%if(locals.dona_count){%>
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>그 중  <a style="color: red"><%=locals.dona_count%></a>개를 기부해</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p><a id="dona" class="btn btn-danger" href="/blood/blood_history_dona_all">기부한 모든 헌혈증 목록 확인 &raquo;</a></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                            <p><a style="color: blue"><%=locals.bdcard_count%></a>개를 더 기부하실 수 있습니다. 
+                    </div>
+
+                    <div class="col-md-4">
+                            <a id="only_reg" class="btn btn-primary" href="/blood/onlyReg_blood_list"> 아직 기부하지 않은 헌혈증 목록 확인 &raquo;</a>
+                    </div>
+                </div>
+            <%}}else{%>
+                <div class="row">
+                     <div class="col-md-6">
+                        <p>헌혈증 등록내역이 존재하지 않습니다.</p>
+                    </div>
+                </div>
+            <%}%>
+            <hr>
+            <%if(locals.donated_bdcard_count){%>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p>총 <a style="color: blueviolet"><%=locals.donated_bdcard_count%></a>개의 헌혈증을 기부받으셨습니다.</p>
+                    </div>
+                    <div class="col-md-4">
+                            <a id="donated" class="btn btn-primary" href="/blood/donated_blood_list"> 기부받은 헌혈증 목록 확인 &raquo;</a>
+                    </div>
+                </div>
+            <%}else{%>
+                <div class="row">
+                     <div class="col-md-6">
+                        <p>헌혈증을 기부받은 내역이 존재하지 않습니다.</p>
+                    </div>
+                </div>
+            <%}%>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>개인회원 기부순위</h3>
+                    <%if(persons){%>
+                        <ol>
+                            <%for(var person of persons){%>
+                                <li><%=person.nickname%>님(<%=person.dona_count%>개)</li>
+                            <%}%>
+                        </ol>
+                    <%}%>
+                </div>
+
+                <div class="col-md-4">
+                    <h3>기업회원 기부순위</h3>
+                    <%if(companys){%>
+                        <ol>
+                            <%for(var company of companys){%>
+                                <li><%=company.user_name%>님(<%=company.dona_count%>개)</li>
+                            <%}%>
+                        </ol>
+                    <%}%>
+                </div>
+                <div class="col-md-4">
+                  
+                </div>
+            </div>
+        </div> <!-- /container -->
+        <hr>
+        
+    </main>
+
+    <footer class="container">
+        <p>&copy; Company 2017-2019</p>
+    </footer>
+
+    <%if(!locals.user_id){%>
+        <script>    
+        var a = 3
+           $(function () {
+                $("#blood_reg, #blood_history_donate, #only_reg, #dona")
+                    .removeAttr('href')
+                    .click(function () { alert('회원만 이용할 수 있습니다. 회원가입을 해주세요!') });
+            
+        }) 
+        </script>
+    <%}%>
+
+    
+    
+</body>
+
+</html>

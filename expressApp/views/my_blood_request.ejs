@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>기부요청 관리</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/jumbotron.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+        integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</script>
+    <script>window.jQuery || document.write('<script src="/bootstrap/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+</head>
+
+<%if(!locals.user_id){%>    
+    <script>
+        alert('로그아웃 상태입니다. 메인으로 돌아갑니다.');
+        location.href = '/';  
+    </script>
+<%}%>
+
+<body> 
+    <%- include("header_login.ejs")%>
+</div>
+    
+    <main>
+        <div class="container text-center">
+        <h1>내 기부요청 목록</h1>
+        <%if(Object.keys(reqboards).length != 0){%> <!--올린 기부요청글이 있을 때-->
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input bg-success" id="check_all">
+                                <label class="custom-control-label" for="check_all"></label>
+                            </div>
+                        </th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>날짜</th>
+                        <th>기부된 개수/필요한 개수</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%for(var rb of reqboards){
+                    %>
+                    <tr>
+                        <%if (rb.donated_count == 0) {%>
+                            <th>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input bg-success" id="chk<%=rb.id%>" name="check">
+                                    <label class="custom-control-label" for="chk<%=rb.id%>"></label>
+                                </div>
+                            </th>
+                        <%} else {%>
+                            <th></th>
+                        <%}%>
+
+                        <td><%=rb.id%></td>
+                        <td><%=rb.title%></td>
+
+                        <% 
+                        function getFormatDate (date) { 
+                            var year = date.getFullYear();
+                            var month = (1 + date.getMonth());
+                            month = month >= 10 ? month : '0' + month;
+                            var day = date.getDate();
+                            day = day >= 10 ? day : '0' + day;
+                            var hours = date.getHours()
+                            var minutes = date.getMinutes()
+                            var seconds = date.getSeconds();
+
+                            if (hours < 10)
+                                hours = "0" + hours;
+
+                            if (minutes < 10)
+                                minutes = "0" + minutes;
+
+                            if (seconds < 10)
+                                seconds = "0" + seconds;
+
+                            return year + '-' + month + '-' + day + '\n' + hours + ':' + minutes + ':' + seconds; 
+                        } %>
+                        <td><%=getFormatDate(rb.reg_date)%></td>
+
+                        <td id="bcount<%=rb.id%>"><%=rb.donated_count%>/<%=rb.need_count%></td>
+                        <%if (rb.is_finished) {%>
+                            <td style="color: green">기부완료</td>
+                        <%} else {%>
+                            <td></td>
+                        <%}%>
+                        <%if (rb.is_all_used) {%>
+                            <td style="color: green">사용완료</td>
+                        <%} else {%>
+                            <%if (rb.is_finished) {%>
+                                <td class="use" id="<%='use' + rb.id%>">
+                                    <button id="<%=rb.id%>" type="button" class="btn-success btn-sm" 
+                                        data-need_count="<%=rb.need_count%>">사용하기</button>
+                                </td>
+                            <%} else {%>
+                                <td></td>
+                            <%}%>
+                        <%}%>
+                        <%if (rb.donated_count == 0) {%>
+                            <td class="delete" id="<%='delete' + rb.id%>">
+                                <button type="button" class="btn-success btn-sm" data-id="<%=rb.id%>">삭제</button>
+                            </td>
+                        <%}else{%>
+                            <td></td>
+                        <%}%>
+                    </tr>
+                    <%}%>
+                </tbody>
+            </table>
+            
+
+            <div id="user_bdcard_count" style="float: left; color: red">※ 게시글 삭제는 기부받은 헌혈증이 0개일 경우만 가능합니다.</div>
+            <div style="float: right">
+                <td class="delete_opt" id="delete_opt">
+                    <button type="button" class="btn-success btn-sm" data-id="<%=rb.id%>">선택항목 삭제</button>
+                </td>          
+            </div>
+        <%}else{%>
+            <div><h4>등록한 기부요청글이 없습니다!</h4></div>
+        <%}%>
+        </div>
+    </main>
+
+
+<script>
+    $(document).ready(function () {
+        $('#donated_alerm').on('shown.bs.toast', function () {
+            $('#donated_alerm').toast('hide');
+        })
+    });
+
+    // 최상단 체크박스 클릭
+    $("#check_all").click(function () {
+        if ($("#check_all").prop("checked")) {
+            // input 태그의 name이 check인 태그들을 찾아서 checked 옵션을 true로 정의
+            $("input[name=check]").prop("checked", true);
+        } else {
+            // input 태그의 name이 check인 태그들을 찾아서 checked 옵션을 false로 정의
+            $("input[name=check]").prop("checked", false);
+        }
+    });
+
+    // 선택항목 삭제요청
+    $('.delete_opt button').click(function() {
+        var button = $(this);
+    });
+
+    // 삭제요청
+    $('.delete button').click(function() {
+        var button = $(this);
+        var id = button.data('id');
+
+        $.ajax({
+            url: '/blood/my_blood_request_delete',
+            dataType: 'json',
+            type: 'POST',
+            data: { 
+                id: id
+            },
+            success: function (data) {
+                alert('해당 게시글이 정상적으로 삭제되었습니다.');
+                location.href = '/blood/my_blood_request';
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+
+    // 사용하기
+    $('.use button').click(function(){
+        var button = $(this);
+        var id = button.attr('id');
+        // var req_user_id = button.data('req_user_id');
+        var need_count = button.data('need_count');
+     
+        $.ajax({
+            url: '/blood/blood_use',
+            dataType: 'json',
+            type: 'POST',
+            data: { 
+                id: id
+            },
+            success: function (data) {
+                alert(need_count + '개의 헌혈증이 사용되었습니다');
+                $('#use' + id).text('사용완료').css('color', 'green');
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+    
+</script>
+
+  
+    
+</body>
+
+</html>
+

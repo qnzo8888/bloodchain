@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>메인화면</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/jumbotron.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+        integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</script>
+    <script>window.jQuery || document.write('<script src="/bootstrap/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+</head>
+
+
+
+<body class="text-center">
+
+    <%-include('header_logout.ejs')%>
+
+    <main>
+        <div class="jumbotron">
+            <p>
+                <h2>개인 회원가입</h2>
+            </p>
+            <br>
+            <form class="form-register" name="user_info" method="post" onsubmit="return validate();" action="/users/register_do">
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+                    <label for="input" class="col-sm-2 col-form-label">아이디</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control col-sm-8" id="user_id" name="user_id" placeholder="" required>
+                    </div>
+                    <div class="col-sm-4"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">비밀번호</label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control col-sm-8" id="user_pwd" name="user_pwd"
+                            placeholder="" required>
+                    </div>
+                    <div class="col-sm-4"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">비밀번호 확인</label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control col-sm-8" id="user_pwdCheck" name="user_pwdCheck"
+                            placeholder="" required>
+                    </div>
+                    <div class="col-sm-4"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+
+                    <label for="input" class="col-sm-2 col-form-label">이름</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control col-sm-8" id="user_name" name="user_name" placeholder="" required>
+                    </div>
+                    <div class="col-sm-4"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+
+                    <label for="input" class="col-sm-2 col-form-label">닉네임</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control col-sm-8" id="nickname" name="nickname" placeholder="" required>
+                    </div>
+                    <div class="col-sm-4"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4"></div>
+
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-primary">회원가입</button>
+                    </div>
+                    <div class="col-sm-4"></div>
+
+                </div>
+                <input type="hidden" name="flag" id="flag" value="0">
+            </form>
+
+        </div>
+    </main>
+
+    <script>      
+        document.getElementById('user_id').focus();
+        function validate() {
+            var pwd = document.getElementById("user_pwd").value;
+            var pwdCheck = document.getElementById("user_pwdCheck").value;
+            if (pwd != pwdCheck) {
+                alert('비밀번호와 비밀번호 확인 항목이 일치하지 않습니다!');
+                return false;
+            }
+        }
+    </script>
+    <!-- 중복으로 인해 회원가입 실패 후 다시 돌아온 경우 알림, 중복 안되는 나머지 입력값들은 input에 그대로 유지 -->
+    <%if(register == 'fail_id'){%>
+        <script>
+            alert('이미 존재하는 아이디입니다. 새로운 아이디를 입력해주세요!');
+            document.getElementById('user_pwd').value = "<%=user_pwd%>";
+            document.getElementById('user_pwdCheck').value = "<%=user_pwd%>";
+            document.getElementById('user_name').value = "<%=user_name%>";
+            document.getElementById('nickname').value = "<%=nickname%>";
+        </script>
+    <%} else if(register == 'fail_nickname'){%>
+        <script>
+            alert("이미 존재하는 닉네임입니다. 새로운 닉네임을 입력해주세요!");
+            document.getElementById('user_id').value = "<%=user_id%>";
+            document.getElementById('user_pwd').value = "<%=user_pwd%>";
+            document.getElementById('user_pwdCheck').value = "<%=user_pwd%>";
+            document.getElementById('user_name').value = "<%=user_name%>";
+    
+            document.getElementById('nickname').focus();
+    
+        </script>
+    <%}%>
+   
+
+</body>
+
+</html>

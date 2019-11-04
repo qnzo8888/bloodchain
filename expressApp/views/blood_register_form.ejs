@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>헌혈증 등록</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/jumbotron.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous">
+        integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"</script>
+    <script>window.jQuery || document.write('<script src="/bootstrap/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<%if(!locals.user_id){%>    
+    <script>
+        alert('로그아웃 상태입니다. 메인으로 돌아갑니다.');
+        location.href = '/';  
+    </script>
+<%}%>
+
+<%if(register == "success"){%>
+    <script>
+        alert('헌혈증을 안전하게 등록하였습니다.');
+        location.href = '/blood/blood_register';    
+    </script>
+<%} else if(register == "fail"){%>
+    <script>
+        alert("이미 등록한 헌혈증입니다. 새로운 헌혈증을 등록해주세요!");
+        location.href = '/blood/blood_register';
+    </script>
+<%}%>
+
+<body>  
+    
+    <%- include("header_login.ejs")%>
+
+   
+    <script>
+        $(function () {
+            $("#bnum").on("keyup", function () {
+                $(this).val($(this).val().replace(/[^0-9]/g, ""));
+            });
+        })
+    </script>
+
+    <main>
+        <div class="jumbotron">
+            <form class="form-register text-center" method="post" action="/blood/blood_register_do" onsubmit="return check();">
+                <br>
+                <p>
+                    <h2>보유한 헌혈증을 등록하세요!</h2>
+                </p>
+
+                <div class="form-group row">
+                    <div class="col-sm-2"></div>
+
+                    <label for="inputBnum" class="col-sm-3 col-form-label text-right">헌혈증 일련번호:</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="bnum"  id="bnum" class="form-control col-sm-5" placeholder="일련번호를 -를 빼고 숫자만 입력해주세요" required
+                            autofocus>
+                    </div>
+                    <div class="col-sm-3"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2"></div>
+
+                    <label for="inputBdate" class="col-sm-3 col-form-label text-right">헌혈날짜:</label>
+                    <div class="col-sm-6">
+                        <input type="date" name="bdate" class="form-control col-sm-5" placeholder="헌혈날짜를 입력해주세요" required>
+                    </div>
+                    <div class="col-sm-3"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2"></div>
+
+                    <label for="inputBtype" class="col-sm-3 col-form-label text-right">헌혈종류:</label>
+                    <div class="col-sm-2">
+                        <select class="custom-select" name="btype">
+                            <option selected value="전혈 320ml">전혈 320ml</option>
+                            <option value="전혈 400ml">전혈 400ml</option>
+                            <option value="혈소판">혈소판</option>
+                            <option value="혈장">혈장</option>
+                            <option value="혈소판혈장">혈소판혈장</option>
+                        </select>
+                        <!-- <input type="text" name="btype" class="form-control col-sm-5" placeholder="혈액종류를 입력해주세요" required> -->
+                    </div>
+                    <div class="col-sm-3"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2"></div>
+
+                    <label for="inputBname" class="col-sm-3 col-form-label text-right">혈액원명:</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="bname" class="form-control col-sm-5" placeholder="혈액원명을 입력해주세요" required>
+                    </div>
+                    <div class="col-sm-3"></div>
+
+                </div>
+                <div class="col-sm-2"></div>
+
+                <div class="form-group text-center ">
+                    <button type="submit" name="blood_register_btn" class="btn btn-primary col-md-2">등록</button>
+                </div>
+                <div class="col-sm-3"></div>
+                <input type="hidden" name="owner_id" value="<%= locals.user_id%>">
+                보유중인 헌혈증 개수 : <%=locals.bdcard_count%>
+            </form>
+        </div>
+    </main>
+
+    
+</body>
+
+</html>

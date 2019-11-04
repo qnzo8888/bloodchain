@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>정보수정</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/jumbotron/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+</head>
+
+<%if(!locals.user_id){%>    
+    <script>
+        location.replace = '/';  
+    </script>
+<%}%>
+
+<%if (register == "success") {%>
+    <script>
+        alert('회원정보 수정이 완료되었습니다.');
+        location.href = '/users/mypage';
+    </script>
+<%} else if (register == "fail") {%>
+    <script>
+        alert("회원정보 수정에 실패했습니다.");
+        location.href = '/users/my_profile_edit';
+    </script>
+<%}%>
+
+<body>  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="/bootstrap/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+
+    <%- include("header_login.ejs")%>
+
+    <main>
+        <div class="container">
+            <br><br><br>
+            <p><h2>개인정보 수정</h2></p>
+
+
+            <form class="form-register" method="post" onsubmit="return validate();" action="/users/my_profile_edit_do">
+            <div class="bg-light m-3 p-3">
+                <div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="text-center" scope="row">아이디</th>
+                                <td class="text-center"><%=locals.user_id%></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" scope="row"><label for="input">닉네임</label></th>
+                                <td class="text-center"><%=locals.nickname%></td>
+                                <!--td>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control col-sm-8" id="nickname" name="nickname" placeholder="" required autofocus>
+                                    </div>
+                                </td-->
+                            </tr>
+                            <tr>
+                                <th class="text-center"><%if(locals.flag){%>재단<%}%>이름</th>
+                                <td class="text-center"><%=locals.user_name%></td>
+                            </tr>
+                            <%if(locals.flag){%>
+                            <tr>
+                                <th class="text-center">사업자등록번호</th>
+                                <td class="text-center"><%=locals.business_license_num%></td>
+                            </tr>
+                            <%}%>
+                            <tr>
+                                <th class="text-center" scope="row"><label for="input">비밀번호</label></th>
+                                <td>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control col-sm-8" id="password" name="password" placeholder="" required autofocus>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" scope="row"><label for="input">비밀번호 확인</label></th>
+                                <td>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control col-sm-8" id="password_chk" name="password_chk" placeholder="" required>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                    <button type="submit" id="join-submit" class="btn btn-success col-sm-2">정보수정</button>
+                <a href="/users/mypage" id="cancel" name="cancel" class="btn btn-warning col-sm-2">취소</a>
+            </div>
+
+            </form>
+        </div>
+    </main>  
+
+    <script>      
+        function validate() {
+            var pwd = document.getElementById("password").value;
+            var pwd_chk = document.getElementById("password_chk").value;
+
+            if (pwd != pwd_chk) {
+                alert('비밀번호와 비밀번호 확인 항목이 일치하지 않습니다!');
+                
+                return false;
+            }
+        }
+    </script>
+
+</body>
+</html>
+
