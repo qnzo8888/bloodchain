@@ -601,7 +601,6 @@ async function invoke() {
 async function invoke(func, params) { 
 ```
 
-```
 다음, 79 ~ 89 line의 다음 코드를
 ```js
 //  The bloodchain chaincode is able to perform a few functions
