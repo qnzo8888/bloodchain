@@ -704,7 +704,7 @@ changeCarOwner 마찬가지로 매개변수를 넣어 호출해준 후 확인해
 
 ### 4. 체인코드 개발(== upgrade)
 ------------
-위의 fabcar 예제에서 차의 색깔을 바꾸는 changeCarColor 함수를 추가한다. 처음 설치한 체인코드의 버전이 1.0이기 때문에
+위의 fabcar 예제에서 차의 색깔을 바꾸는 changeCarColor 함수를 추가한다. 처음 설치한 체인코드의 버전이 1.0이기 때문에,
 다음버전 1.1로 peer0.org1에만 새로 install한다.<br>
 bloodchain.js 파일 맨 밑 changeCarOwner 함수 밑에 다음 함수를 작성한다.
 ```js
@@ -799,15 +799,15 @@ Response is  {"color":"B","docType":"car","make":"A","model":"A","owner":"A"}
 -> color가 B로 변경되었다. 작성한 체인코드가 정상적으로 업그레이드 된 것을 알 수 있다.
 
 
-위와 같은 방식으로 작성된, 본 프로젝트의 체인코드 [개발용 sdk, 체인코드](https://github.com/qnzo8888/bloodchain/tree/master/codeForGuide)에 있는 코드를 
-chaincode 디렉터리의 bloodchain.js, nodejs-sdk 디렉터리의 query.js, invoke.js 파일에 복사한다.<br> 이 때, initLedger으로 원래 있던 원장의 내용을 update 해야하므로 
+위와 같은 방식으로 작성된, 본 프로젝트의 체인코드 [개발용 sdk, 체인코드](https://github.com/qnzo8888/bloodchain/tree/master/codeForGuide)에 있는 코드를 chaincode 디렉터리의 bloodchain.js, nodejs-sdk 디렉터리의 query.js, invoke.js 파일에 복사한다.<br> 
+이 때, initLedger으로 원래 있던 원장의 내용을 update 해야하므로 
 ```sh
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker  images dev-*)
 ```
-위 명령어로 docker 컨테이너와 이미지들을 모두 지운 후, nodejs-sdk의 hfc-key-store 디렉터리를 삭제한다. 
-이후 blood-network에서 ./byfn down 후 새로 네트워크를 시작해 체인코드 설치까지 진행한다. (2. 체인코드 install 및 instantiate 까지만 실행)
+위 명령어로 docker 컨테이너와 이미지들을 모두 지운 후, nodejs-sdk의 hfc-key-store 디렉터리를 삭제한다.<br> 
+이후 blood-network에서 ./byfn down 후 새로 네트워크를 시작해 체인코드 설치까지 진행한다. (2. 체인코드 install 및 instantiate 까지만 실행)<br>
 nodejs-sdk 디렉터리로 가서 admin, user를 재등록 후 본 프로젝트에서 구현한 query, invoke를 실행해본다.<br> 
  ex) donate : key가 인자1인 데이터의 owner를 인자2로, used_place를 인자3값으로 변경, register : key값이 인자1, owner가 인자2인 데이터 저장
 ```sh
