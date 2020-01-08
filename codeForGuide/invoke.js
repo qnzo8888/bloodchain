@@ -13,9 +13,9 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
-var bloodnetwork_path = path.resolve('..', 'fabric', 'blood-network');
-var org2tlscacert_path = path.resolve(bloodnetwork_path, 'crypto-config', 'peerOrganizations', 'org2.example.com', 'tlsca', 'tlsca.org2.example.com-cert.pem');
-var org2tlscacert = fs.readFileSync(org2tlscacert_path, 'utf8');
+var bloodnetwork_path = path.resolve('..', 'blood-network');
+var org1tlscacert_path = path.resolve(bloodnetwork_path, 'crypto-config', 'peerOrganizations', 'org1.example.com', 'tlsca', 'tlsca.org1.example.com-cert.pem');
+var org1tlscacert = fs.readFileSync(org1tlscacert_path, 'utf8');
 
 // node invoke.js [호출할 함수 이름] [함수의 매개변수...]  
 
@@ -56,7 +56,7 @@ switch (func) {
 }
 
 async function invoke(func, params) {
-	console.log('\n\n --- invoke2.js - start');
+	console.log('\n\n --- invoke1.js - start');
 	try {
 		console.log('Setting up client side network objects');
 		// fabric client instance
@@ -68,9 +68,9 @@ async function invoke(func, params) {
 		const channel = fabric_client.newChannel('bloodchannel');
 		console.log('Created client side object to represent the channel');
 		// -- peer instance to represent a peer on the channel
-		const peer = fabric_client.newPeer('grpcs://localhost:9051', {
-			'ssl-target-name-override': 'peer0.org2.example.com',
-			pem: org2tlscacert
+		const peer = fabric_client.newPeer('grpcs://localhost:7051', {
+			'ssl-target-name-override': 'peer0.org1.example.com',
+			pem: org1tlscacert
 		});
 		console.log('Created client side object to represent the peer');
 
@@ -92,11 +92,11 @@ async function invoke(func, params) {
 
 		// get the enrolled user from persistence and assign to the client instance
 		//    this user will sign all requests for the fabric network
-		const user = await fabric_client.getUserContext('user2', true);
+		const user = await fabric_client.getUserContext('user1', true);
 		if (user && user.isEnrolled()) {
-			console.log('Successfully loaded "user2" from user store');
+			console.log('Successfully loaded "user1" from user store');
 		} else {
-			throw new Error('\n\nFailed to get user2.... run registerUser2.js');
+			throw new Error('\n\nFailed to get user1.... run registerUser1.js');
 		}
 
 		console.log('Successfully setup client side');
@@ -130,7 +130,7 @@ async function invoke(func, params) {
 					targets: [peer],
 					chaincodeId: 'bloodchain',
 					fcn: 'donate',
-					args: [params[0], params[1], params[2], params[3]],
+					args: [params[0], params[1], params[2]],
 					chainId: 'bloodchannel',
 					txId: tx_id
 				};
