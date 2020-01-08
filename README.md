@@ -1,9 +1,9 @@
-# Hyperledger Fabric, node.js 체인코드, 웹 연동 구축 가이드
+# Hyperledger Fabric, Node.js SDK, 체인코드 가이드
 * Hyperledger Fabric, express(Node.js), sdk(Node.js) 연동한 웹 서비스 구축
 * chaincode : Go 언어가 아닌 javascript(Node.js) 사용
 * fabric sdk : Node.js 사용
 * 상태 db : couchdb 
-* fabric 공식 sample의 byfn 기반 네트워크 구축
+* fabric 공식 sample의 byfn,  기반 네트워크 구축
 
 ## 개발환경 설정
 * 가상머신
