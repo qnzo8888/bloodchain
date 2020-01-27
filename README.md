@@ -103,7 +103,7 @@ Manage images
 ```
 확인
 ``` sh
-~$ docker compose version
+~$ docker-compose version
 
 docker-compose version 1.17.1, build unknown
 docker-py version: 2.5.1
