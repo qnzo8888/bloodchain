@@ -1,4 +1,4 @@
-# Hyperledger Fabric, Node.js SDK, 체인코드 가이드
+# 블록체인(Hyperledger Fabric) 기반 헌혈증 공유 서비스 구축
 * Hyperledger Fabric, express(Node.js), sdk(Node.js) 연동한 웹 서비스 구축
 * chaincode : Go 언어가 아닌 javascript(Node.js) 사용
 * fabric sdk : Node.js 사용
